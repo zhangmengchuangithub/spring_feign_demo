@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public enum FeignError {
 
-    READ_TIME_OUT("READ_TIME_OUT", "读超时"),
+    READ_TIME_OUT("READ_TIME_OUT", "读取超时"),
 
     CONNECT_TIME_OUT("CONNECT_TIME_OUT", "连接超时"),
 
