@@ -8,6 +8,7 @@ import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author zhangmengc
@@ -34,7 +35,7 @@ public class FeignConfig {
                         // 判断自定义异常 兼容以前版本（后续新代码不建议server端直接抛异常给前端）
                         Boolean success = jsonObject.getBoolean("success");
                         if (status != null) {
-                            if (status == 500) {
+                            if (status == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                                 // 封装成CustomHystrixBadRequestException不进入fallback
                                 return CustomHystrixBadRequestException
                                         .buildFailException(false, status.toString(), jsonObject.getString("error"));
