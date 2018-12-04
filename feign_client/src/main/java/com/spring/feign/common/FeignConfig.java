@@ -1,7 +1,9 @@
 
 package com.spring.feign.common;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import feign.Response;
 import feign.Util;
 import feign.codec.ErrorDecoder;

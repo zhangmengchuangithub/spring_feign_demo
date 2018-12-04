@@ -21,14 +21,20 @@ public class FeignServiceErrorDemoService implements FeignServiceErrorDemo {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @Override
     public ResponseMsg<String> testCatchException(String test) {
-        return new ResponseMsg.Builder<String>(false).errorCode("").message("").build();
+        return new ResponseMsg.Builder<String>(false)
+                .errorCode("Server Error")
+                .message("后端封装ResponseMsg，指定HTTP状态为500")
+                .build();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @Override
     public ResponseMsg<String> testCatchCustomException(String test) {
-        return new ResponseMsg.Builder<String>(false).errorCode("").message("").build();
+        return new ResponseMsg.Builder<String>(false)
+                .errorCode("Server Error")
+                .message("后端封装ResponseMsg，指定HTTP状态为500")
+                .build();
     }
 
     @Override

@@ -3,9 +3,9 @@ package com.spring.feign.remote;
 
 import com.netflix.hystrix.exception.HystrixTimeoutException;
 import com.spring.feign.common.FeignError;
+import feign.RetryableException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-
-import java.net.SocketTimeoutException;
 
 /**
  * @author zhangmengc
@@ -27,18 +27,18 @@ public class FeignGetErrorMsg {
      */
     protected FeignError getFeignError(Throwable cause) {
         String msg = cause.getMessage();
-        if (cause instanceof RuntimeException) {
-            if (HYSTRIX_CIRCUIT_SHORT_CIRCUITED_AND_IS_OPEN.equals(msg)) {
-                return FeignError.HYSTRIX_OPEN;
-            }
-        } else if (cause instanceof SocketTimeoutException) {
-            if (READ_TIMED_OUT.equals(msg)) {
+        if (cause instanceof RetryableException && StringUtils.isNotBlank(msg)) {
+            if (msg.startsWith(READ_TIMED_OUT)) {
                 return FeignError.READ_TIME_OUT;
-            } else if (CONNECT_TIMED_OUT.equals(msg)) {
+            } else if (msg.startsWith(CONNECT_TIMED_OUT)) {
                 return FeignError.CONNECT_TIME_OUT;
             }
         } else if (cause instanceof HystrixTimeoutException) {
             return FeignError.HYSTRIX_TIME_OUT;
+        } else if (cause instanceof RuntimeException) {
+            if (HYSTRIX_CIRCUIT_SHORT_CIRCUITED_AND_IS_OPEN.equals(msg)) {
+                return FeignError.HYSTRIX_OPEN;
+            }
         }
         return FeignError.INTERNAL_SERVER_ERROR;
     }
