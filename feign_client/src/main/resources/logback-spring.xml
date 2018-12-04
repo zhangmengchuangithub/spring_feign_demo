@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_BASE" value="/www/logs/pds-pms"/>    <!-- 日志存储的路径 -->
+    <property name="LOG_MAX_SIZE" value="30MB"/>    <!-- 每个日志文件最多30mb，超过将会进行切割 -->
+    <property name="LOG_MAX_INDEX" value="3"/>            <!-- 日志最多个数，超过会自动删除 -->
+    <property name="LOG_APP_NAME" value="PMS"/>
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <!-- Console 输出设置 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 文件输出 -->
+    <!-- 按照每天生成日志文件 -->
+    <appender name="ERROR_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_BASE}/error.log</file>
+        <!-- 只打印错误日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/error.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>${LOG_MAX_INDEX}</maxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${LOG_MAX_SIZE}</maxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>%d [${LOG_APP_NAME}] [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--业务日志 -->
+    <appender name="BIZ_ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_BASE}/biz.log</file>
+        <!--只打印INFO-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/biz.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>${LOG_MAX_INDEX}</maxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${LOG_MAX_SIZE}</maxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>%d [${LOG_APP_NAME}] [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="dev">
+        <root level="ERROR">
+            <!--错误日志-->
+            <appender-ref ref="ERROR_LOG"/>
+            <!--业务日志-->
+            <appender-ref ref="BIZ_ROLLING_FILE"/>
+            <appender-ref ref="STDOUT"/>
+        </root>
+
+        <!--日志输出设置 -->
+        <!--业务日志 -->
+        <logger name="com.fpx" level="INFO"/>
+        <!--错误日志 -->
+        <logger name="com.fpx.pds.pms.mapper" level="DEBUG"/>
+        <logger name="org.mybatis" level="DEBUG"/>
+        <logger name="org.springframework" level="ERROR"/>
+        <logger name="org.mongodb" level="ERROR"/>
+        <logger name="org.apache" level="ERROR"/>
+        <logger name="com.alibaba" level="ERROR"/>
+        <logger name="o.h" level="ERROR"/>
+    </springProfile>
+    <springProfile name="local">
+        <root level="DEBUG">
+            <!--错误日志-->
+            <appender-ref ref="STDOUT"/>
+        </root>
+        <!--日志输出设置 -->
+        <!--业务日志 -->
+        <logger name="com.fpx" level="DEBUG"/>
+        <!--错误日志 -->
+        <logger name="com.fpx.pds.pms.mapper" level="DEBUG"/>
+        <logger name="org.mybatis" level="DEBUG"/>
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="org.mongodb" level="INFO"/>
+        <logger name="org.apache" level="INFO"/>
+        <logger name="com.alibaba" level="INFO"/>
+        <logger name="o.h" level="INFO"/>
+    </springProfile>
+
+
+</configuration>
