@@ -3,6 +3,7 @@ package com.spring.feign.web;
 
 import com.spring.feign.common.ResponseMsg;
 import com.spring.feign.remote.FeignConnectionTimeoutDemoClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/test")
+@Slf4j
 public class FeignConnectionTimeoutDemoWeb {
 
     @Autowired
@@ -23,6 +25,7 @@ public class FeignConnectionTimeoutDemoWeb {
     @RequestMapping("/connectiontimeout")
     @ResponseBody
     public ResponseMsg<String> connectionTimeout () {
+        log.info("connect time out test beign.....");
         ResponseMsg<String> res = feignConnectionTimeoutDemoClient.connectionTimeout();
         if (res.isSuccess()) {
             return res;

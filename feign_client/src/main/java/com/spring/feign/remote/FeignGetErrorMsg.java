@@ -19,6 +19,7 @@ public class FeignGetErrorMsg {
     public static final String HYSTRIX_CIRCUIT_SHORT_CIRCUITED_AND_IS_OPEN = "Hystrix circuit short-circuited and is OPEN";
     public static final String READ_TIMED_OUT = "Read timed out";
     public static final String CONNECT_TIMED_OUT = "connect timed out";
+    public static final String CONNECTION_REFUSED = "Connection refused";
 
     /**
      * 根据错误封装异常
@@ -35,6 +36,8 @@ public class FeignGetErrorMsg {
                 return FeignError.READ_TIME_OUT;
             } else if (msg.startsWith(CONNECT_TIMED_OUT)) {
                 return FeignError.CONNECT_TIME_OUT;
+            } else if(msg.startsWith(CONNECTION_REFUSED)) {
+                return FeignError.CONNECTION_REFUSED;
             }
         } else if (cause instanceof HystrixTimeoutException) {
             return FeignError.HYSTRIX_TIME_OUT;
@@ -43,7 +46,7 @@ public class FeignGetErrorMsg {
                 return FeignError.HYSTRIX_OPEN;
             }
         }
-        return FeignError.INTERNAL_SERVER_ERROR;
+        return FeignError.REMOTE_SERVICE_EXCEPTION;
     }
 
 }
