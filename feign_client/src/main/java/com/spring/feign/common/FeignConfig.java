@@ -1,9 +1,7 @@
 
 package com.spring.feign.common;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import feign.Response;
 import feign.Util;
 import feign.codec.ErrorDecoder;
@@ -42,8 +40,7 @@ public class FeignConfig {
                                 return CustomHystrixBadRequestException
                                         .buildFailException(false, status.toString(), jsonObject.getString("error"));
                             } else {
-                                return SystemException
-                                        .buildFailException(false, status.toString(), jsonObject.getString("error"));
+                                return FeignRemoteException.buildFailException(body);
                             }
                         } else if(success != null && !success) {
                             ResponseMsg msg = JSONObject.parseObject(body, ResponseMsg.class);
@@ -55,8 +52,7 @@ public class FeignConfig {
                     log.error("处理Feign的异常信息失败！", e);
                 }
                 // 处理其他异常情况
-                return SystemException
-                        .buildFailException(false, "unknow error", "unknow error");
+                return FeignRemoteException.buildFailException("远程服务调用失败！");
             }
         };
     }

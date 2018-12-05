@@ -3,6 +3,7 @@ package com.spring.feign.remote;
 
 import com.netflix.hystrix.exception.HystrixTimeoutException;
 import com.spring.feign.common.FeignError;
+import com.spring.feign.common.FeignRemoteException;
 import feign.RetryableException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,9 @@ public class FeignGetErrorMsg {
      */
     protected FeignError getFeignError(Throwable cause) {
         String msg = cause.getMessage();
-        if (cause instanceof RetryableException && StringUtils.isNotBlank(msg)) {
+        if (cause instanceof FeignRemoteException) {
+            return FeignError.REMOTE_SERVICE_EXCEPTION;
+        } else if (cause instanceof RetryableException && StringUtils.isNotBlank(msg)) {
             if (msg.startsWith(READ_TIMED_OUT)) {
                 return FeignError.READ_TIME_OUT;
             } else if (msg.startsWith(CONNECT_TIMED_OUT)) {

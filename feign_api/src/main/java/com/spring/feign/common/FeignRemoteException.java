@@ -11,15 +11,17 @@ import lombok.ToString;
  */
 @Getter
 @ToString
-public class BizException extends RuntimeException {
+public class FeignRemoteException extends RuntimeException {
 
     private String message;
 
-    public BizException(){}
-
-    public BizException(String message) {
+    private FeignRemoteException(String message) {
         super(message);
         this.message = message;
+    }
+
+    public static FeignRemoteException buildFailException(String message) {
+        return new FeignRemoteException(message);
     }
 
 }
