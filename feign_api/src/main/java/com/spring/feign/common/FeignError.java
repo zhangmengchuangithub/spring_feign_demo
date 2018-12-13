@@ -36,11 +36,6 @@ public enum FeignError {
     HYSTRIX_TIME_OUT("HYSTRIX_TIME_OUT", "Hystrix执行超时"),
 
     /**
-     * 服务器内部错误
-     */
-    INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "服务器内部错误"),
-
-    /**
      * 远程服务调用出错
      */
     REMOTE_SERVICE_EXCEPTION("REMOTE_SERVICE_EXCEPTION", "远程服务调用出错");
