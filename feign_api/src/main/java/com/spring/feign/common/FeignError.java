@@ -10,18 +10,39 @@ import lombok.Getter;
 @Getter
 public enum FeignError {
 
-    READ_TIME_OUT("READ_TIME_OUT", "读取超时"),
+    /**
+     * 连接读取超时
+     */
+    READ_TIME_OUT("READ_TIME_OUT", "连接读取超时"),
 
+    /**
+     * 连接超时
+     */
     CONNECT_TIME_OUT("CONNECT_TIME_OUT", "连接超时"),
 
+    /**
+     * 连接被拒绝
+     */
     CONNECTION_REFUSED("CONNECTION_REFUSED", "连接被拒绝"),
 
+    /**
+     * 触发Hystrix熔断
+     */
     HYSTRIX_OPEN("HYSTRIX_OPEN", "触发Hystrix熔断"),
 
+    /**
+     * Hystrix执行超时
+     */
     HYSTRIX_TIME_OUT("HYSTRIX_TIME_OUT", "Hystrix执行超时"),
 
+    /**
+     * 服务器内部错误
+     */
     INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "服务器内部错误"),
 
+    /**
+     * 远程服务调用出错
+     */
     REMOTE_SERVICE_EXCEPTION("REMOTE_SERVICE_EXCEPTION", "远程服务调用出错");
 
     private String errorCode;
