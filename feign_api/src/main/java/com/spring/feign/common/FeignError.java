@@ -16,7 +16,7 @@ public enum FeignError {
 
     CONNECTION_REFUSED("CONNECTION_REFUSED", "连接被拒绝"),
 
-    HYSTRIX_OPEN("HYSTRIX_OPEN", "Hystrix熔断开启"),
+    HYSTRIX_OPEN("HYSTRIX_OPEN", "触发Hystrix熔断"),
 
     HYSTRIX_TIME_OUT("HYSTRIX_TIME_OUT", "Hystrix执行超时"),
 
