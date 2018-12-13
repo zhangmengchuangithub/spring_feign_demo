@@ -38,14 +38,14 @@ public class FeignConfig {
                             if (status == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                                 // 封装成CustomHystrixBadRequestException不进入fallback
                                 return CustomHystrixBadRequestException
-                                        .buildFailException(false, status.toString(), jsonObject.getString("error"));
+                                        .buildFailException(status.toString(), jsonObject.getString("error"));
                             } else {
                                 return FeignRemoteException.buildFailException(body);
                             }
                         } else if(success != null && !success) {
                             ResponseMsg msg = JSONObject.parseObject(body, ResponseMsg.class);
                             return CustomHystrixBadRequestException
-                                    .buildFailException(msg.isSuccess(), msg.getErrorCode(), msg.getMessage());
+                                    .buildFailException(msg.getErrorCode(), msg.getMessage());
                         }
                     }
                 } catch (Exception e) {

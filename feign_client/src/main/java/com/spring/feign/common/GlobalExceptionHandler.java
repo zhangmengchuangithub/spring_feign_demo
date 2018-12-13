@@ -21,9 +21,9 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseMsg HystrixBadRequestExceptionhandler(CustomHystrixBadRequestException e, HttpServletRequest req) {
         log.error("hystrix bad request exception", e);
-            return new ResponseMsg.Builder<String>(e.isSuccess())
-                    .errorCode(e.getErrorCode())
-                    .message(e.getMessage())
+            return new ResponseMsg.Builder<String>(false)
+                    .errorCode(e.getErrCode())
+                    .message(e.getErrMsg())
                     .build();
     }
 
